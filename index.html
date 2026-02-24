@@ -14,9 +14,9 @@
 
         body {
             font-family: 'Space Grotesk', sans-serif;
-            background: #f5f2ed;
+            background: #0a0a0a;
             min-height: 100vh;
-            color: #111;
+            color: #e8fb00;
             padding: 40px 20px;
         }
 
@@ -36,20 +36,20 @@
             max-width: 700px;
             height: auto;
             display: inline-block;
-            /* Invert white bg to transparent look if needed — logo is black on white, keep as-is */
-            mix-blend-mode: multiply;
+            /* Tint the black SVG to yellow */
+            filter: invert(1) sepia(1) saturate(10) hue-rotate(10deg) brightness(1.1);
         }
 
         .menu-item {
             margin-bottom: 8px;
-            border-bottom: 2px solid #111;
+            border-bottom: 1px solid rgba(232, 251, 0, 0.3);
         }
 
         .menu-button {
             width: 100%;
             background: none;
             border: none;
-            color: #111;
+            color: #e8fb00;
             font-family: 'Space Grotesk', sans-serif;
             font-size: clamp(32px, 6vw, 56px);
             font-weight: 700;
@@ -66,7 +66,7 @@
 
         .menu-button:hover {
             padding-left: 20px;
-            color: #555;
+            opacity: 0.7;
         }
 
         .menu-button::after {
@@ -84,7 +84,7 @@
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.4s ease;
-            background: #eae7e0;
+            background: #111;
         }
 
         .dropdown-content.active {
@@ -95,13 +95,13 @@
             padding: 30px 20px;
             font-size: 18px;
             line-height: 1.8;
-            color: #222;
+            color: rgba(232, 251, 0, 0.75);
         }
 
         .event {
             margin-bottom: 25px;
             padding-bottom: 20px;
-            border-bottom: 1px solid rgba(0,0,0,0.15);
+            border-bottom: 1px solid rgba(232, 251, 0, 0.15);
         }
 
         .event:last-child {
@@ -110,13 +110,13 @@
 
         .event-date {
             font-weight: 700;
-            color: #111;
+            color: #e8fb00;
             font-size: 20px;
         }
 
         .event-details {
             margin-top: 8px;
-            color: #444;
+            color: rgba(232, 251, 0, 0.6);
         }
 
         .release {
@@ -125,18 +125,18 @@
 
         .release-title {
             font-weight: 700;
-            color: #111;
+            color: #e8fb00;
         }
 
         a {
-            color: #111;
+            color: #e8fb00;
             text-decoration: underline;
             text-underline-offset: 3px;
-            transition: color 0.3s ease;
+            transition: opacity 0.3s ease;
         }
 
         a:hover {
-            color: #555;
+            opacity: 0.6;
         }
 
         @media (max-width: 600px) {
@@ -247,31 +247,17 @@
             <div class="dropdown-content">
                 <div class="dropdown-inner">
                     For all booking inquiries:<br><br>
-                    <a href="mailto:booking@liquidearth.com">booking@liquidearth.com</a><br><br>
-                    Management: <a href="mailto:management@liquidearth.com">management@liquidearth.com</a>
+                    <a href="/cdn-cgi/l/email-protection#5e3c3131353730391e32372f2b373a3b3f2c2a36703d3133"><span class="__cf_email__" data-cfemail="9bf9f4f4f0f2f5fcdbf7f2eaeef2fffefae9eff3b5f8f4f6">[email&#160;protected]</span></a><br><br>
+                    Management: <a href="/cdn-cgi/l/email-protection#0568646b64626068606b7145696c74706c61606477716d2b666a68"><span class="__cf_email__" data-cfemail="fd909c939c9a9890989389bd91948c889499989c8f8995d39e9290">[email&#160;protected]</span></a>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         function toggleDropdown(button) {
             const wasActive = button.classList.contains('active');
             
             // Close all dropdowns
             document.querySelectorAll('.menu-button').forEach(btn => {
                 btn.classList.remove('active');
-            });
-            document.querySelectorAll('.dropdown-content').forEach(content => {
-                content.classList.remove('active');
-            });
-
-            // If this wasn't active, open it
-            if (!wasActive) {
-                button.classList.add('active');
-                button.nextElementSibling.classList.add('active');
-            }
-        }
-    </script>
-</body>
-</html>
