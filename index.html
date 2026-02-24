@@ -1,277 +1,215 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liquid Earth</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        body {
-            font-family: 'Space Grotesk', sans-serif;
-            background: #f5f2ed;
-            min-height: 100vh;
-            color: #111;
-            padding: 40px 20px;
-        }
+  <title>Liquid Earth — DJ</title>
+  <meta name="description" content="Liquid Earth — DJ. Dates, releases, mixes, merch, booking." />
+  <link rel="canonical" href="https://liquidearth.com/" />
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
+  <meta property="og:title" content="Liquid Earth — DJ" />
+  <meta property="og:description" content="Dates, releases, mixes, merch, booking." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://liquidearth.com/" />
+  <meta name="twitter:card" content="summary_large_image" />
 
-        .logo-header {
-            text-align: center;
-            margin-bottom: 80px;
-            padding: 40px 0 20px;
-        }
+  <!-- Font (playful but underground) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-        .logo-header img {
-            width: 100%;
-            max-width: 700px;
-            height: auto;
-            display: inline-block;
-            /* Invert white bg to transparent look if needed — logo is black on white, keep as-is */
-            mix-blend-mode: multiply;
-        }
+  <style>
+    :root{
+      --bg:#0b1216;          /* deep blue-black */
+      --fog:#6f8a93;         /* misty blue-grey */
+      --ink:#e0321c;         /* saturated red */
+      --soft:rgba(255,255,255,.55);
+      --hair:rgba(255,255,255,.14);
+    }
 
-        .menu-item {
-            margin-bottom: 8px;
-            border-bottom: 2px solid #111;
-        }
+    *{box-sizing:border-box}
 
-        .menu-button {
-            width: 100%;
-            background: none;
-            border: none;
-            color: #111;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(32px, 6vw, 56px);
-            font-weight: 700;
-            text-align: left;
-            padding: 20px 0;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-            transition: all 0.3s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    body{
+      margin:0;
+      font-family:"Syne",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background: radial-gradient(120% 120% at 50% 0%, #233b45 0%, var(--bg) 58%);
+      color:var(--fog);
+    }
 
-        .menu-button:hover {
-            padding-left: 20px;
-            color: #555;
-        }
+    a{color:inherit;text-decoration:none}
+    a:hover{opacity:.9}
 
-        .menu-button::after {
-            content: '+';
-            font-size: 40px;
-            font-weight: 300;
-            transition: transform 0.3s ease;
-        }
+    .container{width:min(1100px, calc(100% - 44px)); margin:0 auto}
 
-        .menu-button.active::after {
-            transform: rotate(45deg);
-        }
+    /* Hero */
+    .hero{padding:120px 0 60px}
+    .hero h1{
+      margin:0;
+      font-size:clamp(64px, 10vw, 140px);
+      font-weight:800;
+      letter-spacing:-0.06em;
+      color:var(--ink);
+      text-transform:lowercase;
+      line-height:.92;
+    }
+    .hero .lede{
+      margin:12px 0 0;
+      font-size:18px;
+      color:var(--fog);
+      max-width: 55ch;
+      letter-spacing:.01em;
+    }
 
-        .dropdown-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease;
-            background: #eae7e0;
-        }
+    /* Accordion */
+    .accordion{padding:20px 0 120px}
 
-        .dropdown-content.active {
-            max-height: 2000px;
-        }
+    details{border-top:1px solid var(--hair)}
+    details:last-of-type{border-bottom:1px solid var(--hair)}
 
-        .dropdown-inner {
-            padding: 30px 20px;
-            font-size: 18px;
-            line-height: 1.8;
-            color: #222;
-        }
+    .section-title{
+      list-style:none;
+      font-size:clamp(36px, 6vw, 68px);
+      font-weight:800;
+      letter-spacing:-0.05em;
+      color:var(--ink);
+      cursor:pointer;
+      padding:34px 0 22px;
+      text-transform:lowercase;
+    }
+    .section-title::-webkit-details-marker{display:none}
+    .section-title::marker{content:""}
 
-        .event {
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(0,0,0,0.15);
-        }
+    .section-title::after{
+      content:'+';
+      float:right;
+      font-weight:700;
+      opacity:.65;
+      transform: translateY(3px);
+    }
+    details[open] > .section-title::after{content:'–'}
 
-        .event:last-child {
-            border-bottom: none;
-        }
+    .panel{padding: 0 0 34px}
 
-        .event-date {
-            font-weight: 700;
-            color: #111;
-            font-size: 20px;
-        }
+    /* List rows (poster-ish) */
+    .list{display:grid; gap:10px}
+    .row{
+      display:grid;
+      grid-template-columns: 90px 1fr auto;
+      gap:16px;
+      padding: 6px 0;
+      align-items:baseline;
+    }
+    .date{
+      color:var(--ink);
+      font-weight:700;
+      letter-spacing:.08em;
+      font-size:12px;
+      text-transform:uppercase;
+      opacity:.95;
+    }
+    .meta{
+      color:var(--soft);
+      font-size:12px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      white-space:nowrap;
+      text-align:right;
+    }
 
-        .event-details {
-            margin-top: 8px;
-            color: #444;
-        }
+    /* Small footer line */
+    footer{
+      padding: 0 0 70px;
+      color: var(--soft);
+      font-size: 12px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+    }
 
-        .release {
-            margin-bottom: 20px;
-        }
-
-        .release-title {
-            font-weight: 700;
-            color: #111;
-        }
-
-        a {
-            color: #111;
-            text-decoration: underline;
-            text-underline-offset: 3px;
-            transition: color 0.3s ease;
-        }
-
-        a:hover {
-            color: #555;
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 20px 15px;
-            }
-
-            .logo-header {
-                margin-bottom: 50px;
-            }
-
-            .dropdown-inner {
-                padding: 20px 15px;
-                font-size: 16px;
-            }
-        }
-    </style>
+    @media (max-width: 760px){
+      .container{width:min(1100px, calc(100% - 28px))}
+      .row{grid-template-columns: 80px 1fr;}
+      .meta{grid-column: 1 / -1; text-align:left;}
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo-header">
-            <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgdmVyc2lvbj0iMS4xIgogICBpZD0ic3ZnMiIKICAgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIKICAgd2lkdGg9IjQwMC42MjY2OCIKICAgaGVpZ2h0PSIxMDguODQzMDciCiAgIHZpZXdCb3g9IjAgMCA0MDAuNjI2NjggMTA4Ljg0MzA3IgogICBzb2RpcG9kaTpkb2NuYW1lPSJMaXF1aWQgZWFydGggdHlwZS5haSI+PG1ldGFkYXRhCiAgICAgaWQ9Im1ldGFkYXRhOCI+PHJkZjpSREY+PGNjOldvcmsKICAgICAgICAgcmRmOmFib3V0PSIiPjxkYzpmb3JtYXQ+aW1hZ2Uvc3ZnK3htbDwvZGM6Zm9ybWF0PjxkYzp0eXBlCiAgICAgICAgICAgcmRmOnJlc291cmNlPSJodHRwOi8vcHVybC5vcmcvZGMvZGNtaXR5cGUvU3RpbGxJbWFnZSIgLz48L2NjOldvcms+PC9yZGY6UkRGPjwvbWV0YWRhdGE+PGRlZnMKICAgICBpZD0iZGVmczYiPjxjbGlwUGF0aAogICAgICAgY2xpcFBhdGhVbml0cz0idXNlclNwYWNlT25Vc2UiCiAgICAgICBpZD0iY2xpcFBhdGgxOCI+PHBhdGgKICAgICAgICAgZD0iTSAwLDgxLjYzMiBIIDMwMC40NyBWIDAgSCAwIFoiCiAgICAgICAgIGlkPSJwYXRoMTYiIC8+PC9jbGlwUGF0aD48L2RlZnM+PHNvZGlwb2RpOm5hbWVkdmlldwogICAgIHBhZ2Vjb2xvcj0iI2ZmZmZmZiIKICAgICBib3JkZXJjb2xvcj0iIzY2NjY2NiIKICAgICBib3JkZXJvcGFjaXR5PSIxIgogICAgIG9iamVjdHRvbGVyYW5jZT0iMTAiCiAgICAgZ3JpZHRvbGVyYW5jZT0iMTAiCiAgICAgZ3VpZGV0b2xlcmFuY2U9IjEwIgogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwIgogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiCiAgICAgaW5rc2NhcGU6d2luZG93LXdpZHRoPSI2NDAiCiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iNDgwIgogICAgIGlkPSJuYW1lZHZpZXc0IiAvPjxnCiAgICAgaWQ9ImcxMCIKICAgICBpbmtzY2FwZTpncm91cG1vZGU9ImxheWVyIgogICAgIGlua3NjYXBlOmxhYmVsPSJMaXF1aWQgZWFydGggdHlwZSIKICAgICB0cmFuc2Zvcm09Im1hdHJpeCgxLjMzMzMzMzMsMCwwLC0xLjMzMzMzMzMsMCwxMDguODQzMDcpIj48ZwogICAgICAgaWQ9ImcxMiI+PGcKICAgICAgICAgaWQ9ImcxNCIKICAgICAgICAgY2xpcC1wYXRoPSJ1cmwoI2NsaXBQYXRoMTgpIj48ZwogICAgICAgICAgIGlkPSJnMjAiCiAgICAgICAgICAgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoOTEuNDQzNCwzMC45OTgpIj48cGF0aAogICAgICAgICAgICAgZD0ibSAwLDAgYyAwLjAwMiwtMC4wMzEgMC4wMDIsLTAuMDYgMC4wMDIsLTAuMDg4IC0wLjM4OSwwIC0wLjc4NSwwLjA0NSAtMS4xNjQsLTAuMDExIC0wLjQxNiwtMC4wNjUgLTAuODU5LC0wLjE2MSAtMS4yMSwtMC4zNzIgLTAuMjY3LC0wLjE2IC0wLjU2NSwtMC41MjMgLTAuNTU4LC0wLjc5NSAwLjAwNSwtMC4yMTQgMC40MDksLTAuNTMxIDAuNjk1LC0wLjYxMSAxLjA4NSwtMC4zMjEgMi4xOTksLTAuMTMyIDMuMzA0LC0wLjA4NyAwLjEzNiwwLjAwNyAwLjI5MywwLjAwOSAwLjM5MywwLjA4NSAwLjMyNywwLjI0MyAwLjgwOCwwLjQ2NyAwLjkwNiwwLjc5MyAwLjEzMywwLjQ1IC0wLjI3OSwwLjc4NyAtMC43NTEsMC44NzMgQyAxLjA4NCwtMC4xMTcgMC41NDEsLTAuMDY4IDAsMCBtIDQxLjg4MSwxLjQ2OSBjIDAuMDAyLC0wLjAzNSAwLjAwNiwtMC4wNjQgMC4wMDgsLTAuMDk2IDEuNDE3LDAuMTExIDIuODM4LDAuMjAyIDQuMjU0LDAuMzM2IDEuNDg1LDAuMTM4IDIuOTQsMC40MzcgNC4yNTIsMS4xOTEgMC41NDUsMC4zMTkgMS4wMTMsMC43OCAwLjk2OCwxLjQ1IC0wLjA0NCwwLjY4OCAtMC41NDEsMS4xMzIgLTEuMTk3LDEuMjk0IC0wLjcyMiwwLjE3NCAtMS40NTYsMC4zNCAtMi4xOTEsMC4zNjEgLTIuMDUxLDAuMDQ4IC00LjEwNiwwLjAxNiAtNi4xNiwwLjAxNSAtMC4yLDAgLTAuMzk4LC0wLjAxNSAtMC41OTIsLTAuMDQ1IC0xLjQ0MSwtMC4yNDcgLTIuMzAzLC0xLjI0MSAtMi45MDQsLTIuNDM5IC0wLjY3MywtMS4zNTQgLTAuMTg1LC0xLjg5IDEuMjksLTIuMDU3IDAuNzQ4LC0wLjA4NCAxLjUxNCwtMC4wMSAyLjI3MiwtMC4wMSBtIC04Ljk3NSwxMy41NSBjIDIuNDMsLTAuMTg3IDQuODkzLDAuMTg0IDcuMzMsMC44MSAyLjUyNCwwLjY0OSA0Ljk4MywxLjQ2IDcuMTkyLDIuODc5IDEuMzg2LDAuODkzIDIuNjI1LDEuOTIyIDMuMzY1LDMuNDYzIDAuNzQzLDEuNTQyIDAuMDA0LDMuMDQ0IC0xLjAyOSwzLjc2NSAtMS44MDUsMS4yNTUgLTMuODYsMS43MzMgLTUuOTczLDEuODQzIC0yLjUwNCwwLjEzMSAtNS4wMiwwLjA5MSAtNy41MDYsLTAuNDMyIC0zLjAxNCwtMC42MzggLTUuOTU0LC0xLjQ1NyAtOC42NTYsLTIuOTgzIC0xLjMxLC0wLjczOSAtMi41MDQsLTEuNjE0IC0zLjQyNywtMi44MzMgLTEuMDI4LC0xLjM1NCAtMS4zNjUsLTMuMzYyIDAuMjYsLTQuNTYgMC42ODQsLTAuNDk4IDEuNDQ1LC0wLjkzMSAyLjIyOSwtMS4yNDMgMS45NjQsLTAuNzg4IDQuMDQsLTAuODA2IDYuMjE1LC0wLjcwOSBNIC0zOS45NDIsLTkuMDY0IGMgLTQuNTg5LDAgLTkuMTc5LC0wLjAyNiAtMTMuNzY5LDAuMDA4IC0xLjcyMSwwLjAxMSAtMy40NCwwLjEyNCAtNS4xNTksMC4yMzggLTEuMzI4LDAuMDgyIC0xLjgzMywwLjk0OSAtMS4xNjMsMi4wOTYgMC43MjMsMS4yNDkgMS41NjksMi40MjkgMi4zOTEsMy42MTggMS4wNDYsMS41MSAyLjExMywzLjAwNyAzLjE3Nyw0LjUwNyAxLjU1NywyLjE4MSAzLjA5OSw0LjM3NSA0LjY4OSw2LjUzMSAwLjQ0NSwwLjYwNyAxLjEzMywwLjk2NCAxLjg4NywxLjA2IDAuNzIyLDAuMDk2IDEuNDU5LDAuMTI1IDIuMTksMC4xMjggNy43NTUsMC4wNDggMTUuNTExLDAuMDk5IDIzLjI2NCwwLjExMiAxLjQ5OCwwLjAwNCAzLjAwMiwtMC4xMjQgNC41MDEsLTAuMjQgMC40ODEsLTAuMDQgMC45OTgsLTAuMjAyIDEuMTcxLC0wLjc0OSAwLjE2NywtMC41MTggLTAuMTQ5LC0xLjA5IC0wLjc1NCwtMS4zOTEgLTAuMzI1LC0wLjE2MSAtMC42ODYsLTAuMzA2IC0xLjA0MywtMC4zNDIgLTAuODY2LC0wLjA4MiAtMS43MzksLTAuMTE5IC0yLjYxLC0wLjEzMSAtNS4zMTksLTAuMDQ4IC0xMC42NDEsLTAuMDc5IC0xNS45NjEsLTAuMTI3IC0xLjQ5NSwtMC4wMTIgLTMuMjY3LC0xLjYwMiAtMy40NDIsLTMuMDYzIC0wLjA1NCwtMC40MzEgMC4zMjgsLTAuOTg2IDAuODExLC0xLjEwMyAwLjM0LC0wLjA4NiAwLjY5NywtMC4xMzkgMS4wNDYsLTAuMTM5IDMuNzExLC0wLjAwOSA3LjQyMywwLjAwNiAxMS4xMzQsLTAuMDE2IDAuNjYyLC0wLjAwMiAxLjMyNSwtMC4xMzMgMS45ODMsLTAuMjI4IDAuNDU4LC0wLjA2NCAwLjg0NSwtMC4zNTYgMC43OTUsLTAuNzk4IC0wLjA0OCwtMC40MjcgLTAuMjQ5LC0wLjk3NSAtMC41NywtMS4xOSAtMC40NTksLTAuMzEgLTEuMDg3LC0wLjQ5MyAtMS42NDcsLTAuNTAyIC00LjYzOSwtMC4wNzcgLTkuMjgyLC0wLjA2NyAtMTMuOTIyLC0wLjE2NCAtMS4wNDYsLTAuMDI3IC0yLjE4NSwwLjA0OSAtMy4wOTksLTAuNjk2IC0xLjAxNiwtMC44MjQgLTEuNzA2LC0xLjg4NiAtMi4xNDQsLTMuMTAyIC0wLjE1MiwtMC40MjYgMC4yNzEsLTEuMDQ4IDAuNzczLC0xLjE4MiAwLjMzOCwtMC4wODcgMC42OTUsLTAuMTQzIDEuMDQ0LC0wLjE0MyA1LjQ4OSwtMC4wMSAxMC45NzYsMC4wMzEgMTYuNDY0LC0wLjAyOCAxLjc1NSwtMC4wMjEgMy4yNTIsMC41NjMgNC43MDksMS40MTMgMS45NTksMS4xNDIgMy45MjQsMi4yNjkgNS44ODgsMy40MDMgMi4wOTksMS4yMTYgNC4yLDIuNDIzIDYuMjk1LDMuNjQxIDEuNjU2LDAuOTYgMy4zMDIsMS45NDQgNC45NTksMi44OTkgMS44MzMsMS4wNTIgMy42NjgsMi4wOTUgNS41MTgsMy4xMTUgMC45NzcsMC41MzcgMi4wNjIsMC43MzkgMy4xNjgsMC43NTEgMi41NzQsMC4wMTkgNS4xNDcsMC4wMzEgNy43MjIsLTAuMDEyIDAuNzQ4LC0wLjAxIDEuNTcsMC4wMTcgMi4xNjUsLTAuNTczIDAuMzQ3LC0wLjM0NSAwLjc0NCwtMC43MzUgMC44ODQsLTEuMTgxIDAuODA2LC0yLjUyMiAxLjUzNCwtNS4wNjkgMi4zLC03LjYwNiAwLjEyNCwtMC40MDYgMC4yNzQsLTAuODEyIDAuNDY2LC0xLjE5MiAwLjM3MiwtMC43NCAxLjAxOCwtMS4xNTIgMS44MjEsLTEuMjI2IDEuNjI4LC0wLjE0NiAzLjI5LC0wLjI2NCA0LjQ0MywxLjIzOCAwLjg2OCwxLjEzNSAxLjY3NiwyLjMxNCAyLjQ4NSwzLjQ5MSAwLjY4OCwxIDEuMzc5LDEuOTk1IDEuOTkxLDMuMDM3IDAuNSwwLjg1NiAwLjA5LDEuNjM4IC0wLjg3OSwxLjg4MiAtMC41NjUsMC4xNDEgLTEuMTI4LDAuMjk0IC0xLjY4MywwLjQ2OSAtMS4wNjQsMC4zNDQgLTEuNTAzLDEuMTY4IC0xLjIzNCwyLjI0MiAwLjA1NiwwLjIzMiAwLjEwOSwwLjQ2MiAwLjEzMSwwLjY5OCAwLjEwMiwwLjk3NyAtMC4yMDksMS40NDcgLTEuODE5LDEuNzMxIC0yLjA1OCwwLjM1OCAtNC4xMTMsMC43MDEgLTYuMDg2LDEuNDMxIC0xLjQ0OCwwLjUzOSAtMi44MTMsMS4yMTMgLTMuOTEyLDIuMzE4IC0xLjY1MiwxLjY1NSAtMy42NSwxLjczNCAtNS42OSwxLjEwMiBDIDUuMDY2LDE2Ljc2NCA0LjUwNCwxNi4wNzMgMy45OTUsMTUuNTEzIDMuNDYyLDE0LjkxOSAzLjA3OCwxNC4xOTcgMi41ODEsMTMuNTcgMi4wNTEsMTIuOTA1IDEuMzQ1LDEyLjQ2OCAwLjQ4NywxMi4zNzUgLTAuMjM2LDEyLjI5MiAtMC45NzEsMTIuMjUgLTEuNzAyLDEyLjI1IGMgLTEzLjYyOSwtMC4wMDUgLTI3LjI1OSwtMC4wMDUgLTQwLjg4NywwLjAwNiAtMC41MjIsMCAtMS4wNTcsMC4wOTMgLTEuNTYsMC4yMzMgLTAuOTE3LDAuMjUyIC0xLjIwOSwwLjg0OSAtMC43NTcsMS42ODggMC41MTUsMC45NiAxLjEwMSwxLjg5IDEuNzIzLDIuNzg2IDIuNzEyLDMuOTAxIDUuNDU3LDcuNzgyIDguMTcyLDExLjY4NCAwLjg5LDEuMjc1IDIuMTM0LDEuNzc5IDMuNjI5LDEuNzkgMi4wNTUsMC4wMTIgNC4xMTEsMC4wMiA2LjE2NSwtMC4wMDggMC41MDEsLTAuMDA2IDEuMDE0LC0wLjEwNCAxLjUsLTAuMjQzIDAuNzM4LC0wLjIxIDEuMDc3LC0wLjgyIDAuNzMxLC0xLjUwMiAtMC41MTgsLTEuMDIxIC0xLjEzMSwtMiAtMS43NzksLTIuOTQ4IC0xLjg4NSwtMi43NTkgLTMuODA2LC01LjQ5NyAtNS43MTQsLTguMjQgLTAuMzcsLTAuNTM2IC0wLjYzMSwtMS4xNTQgLTAuMzMzLC0xLjczOCAwLjMwNSwtMC42MDEgMC45OTUsLTAuNjQgMS42MTYsLTAuNjQgNC4yNTIsLTAuMDA2IDguNTAyLC0wLjAwNiAxMi43NTEsLTAuMDA2IDEuOTM1LDAgMy44NzIsMC4wNDkgNS44MDYsLTAuMDE0IDEuNDQyLC0wLjA0NSAyLjQ1MiwwLjYxIDMuMjM2LDEuNzE1IDIuMzc3LDMuMzcyIDQuNzM1LDYuNzU2IDcuMTA4LDEwLjEzMSAwLjU1MywwLjc4NCAxLjExLDEuNTY3IDEuNzE3LDIuMzA2IDAuNDk5LDAuNjEyIDEuMTkzLDEuMDIzIDEuOTczLDEuMDUxIDIuNTIyLDAuMDg5IDUuMDUzLDAuMTA1IDcuNTc3LDAuMTM0IDAuMzA4LDAuMDAyIDAuNjI2LC0wLjA2OSAwLjkzLC0wLjEzNyAxLjA1NiwtMC4yNCAxLjM4NywtMC45MjMgMC45NTUsLTEuOTI5IC0wLjE4NCwtMC40MzEgLTAuMzYzLC0wLjg2NSAtMC41MTUsLTEuMzA3IC0wLjIyNiwtMC42NDkgMC4wMDQsLTEuMDggMC42NTksLTEuMzA3IDEuNDQ2LC0wLjQ5NSAyLjg1MSwtMC4yMTQgNC4xNzcsMC4zNjEgMy4xMDQsMS4zNTIgNi4yODMsMi40NjggOS41ODYsMy4xOTUgMS45MjQsMC40MjEgMy44ODEsMC43MzUgNS44MzQsMC45OTQgMS43NzUsMC4yMzcgMy41NjYsMC40MTcgNS4zNTQsMC40NzkgMy4wODIsMC4xMDUgNi4xNjksMC4xMTEgOS4yNTUsMC4xMyAxLjIwOSwwLjAwNCAyLjQyNSwtMC4wMTkgMy42MjgsLTAuMTI3IDIuNjMzLC0wLjIzNSA1LjI0NCwtMC42MzYgNy43NjgsLTEuNDU1IDEuNjQ0LC0wLjUzMyAzLjEzMywtMS40MDMgNC41MjQsLTIuNDM2IDAuNzM2LC0wLjU0MiAxLjU3OCwtMC43NjQgMi40NzksLTAuNzY0IDAuNjQyLDAgMS4yODEsLTAuMDE2IDEuOTEsMC4wNDYgMS4yMTMsMC4xMjIgMS45OTYsMC44OTYgMi42NjYsMS44MzQgMC4zODYsMC41NDEgMC43ODMsMS4wOTEgMS4yNTYsMS41NSAwLjczMiwwLjcxMSAxLjcxNiwwLjg0NCAyLjY3MywwLjg2NCAyLjEzMywwLjA0OSA0LjI3MSwwLjAyMyA2LjQwNiwwLjAwOSAwLjM2OCwtMC4wMDQgMC43NDUsLTAuMDU5IDEuMTA1LC0wLjE1IDEuMDYzLC0wLjI2NCAxLjQyMywtMC45NjQgMC44ODUsLTEuOTM2IC0wLjU4OSwtMS4wNTcgLTEuMjg2LC0yLjA1NCAtMS45NzUsLTMuMDQ5IC0xLjQ3MSwtMi4xNDMgLTMuMDA0LC00LjI0OCAtNC40NDUsLTYuNDEgLTAuODUsLTEuMjc4IC0wLjM5NSwtMi43MDEgMS4wNTUsLTMuMjIgMS4wMDEsLTAuMzUzIDIuMDgsLTAuNTc0IDMuMTM2LC0wLjY0OSAxLjUwOSwtMC4xMDcgMy4wNDEsLTAuMTI2IDQuNTQ1LC0wLjAwMiAyLjc2NCwwLjIyNyA1LjQ5OCwwLjY4OSA3LjgwNywyLjM4IDAuNzg5LDAuNTc5IDEuNDk4LDEuMzM0IDIuMDc0LDIuMTI4IDIuMjU0LDMuMTI2IDQuNDI4LDYuMzAzIDYuNjU3LDkuNDQzIDAuNzU0LDEuMDY5IDEuOTA2LDEuNDU2IDMuMTQ1LDEuNDU5IDcuODQxLDAuMDIzIDE1LjY4MiwwLjAxNCAyMy41MjgsMCAwLjQ3NywwIDAuOTczLC0wLjExIDEuNDM1LC0wLjI0OSAwLjY5MiwtMC4yMTMgMS4wMjIsLTAuODM0IDAuNjg5LC0xLjQ4NiAtMC41MjIsLTEuMDIgLTEuMTIsLTIuMDA2IC0xLjc3MywtMi45NDkgLTIuNjcsLTMuODU4IC01LjM4NSwtNy42ODYgLTguMDYxLC0xMS41NDMgLTAuOTQ1LC0xLjM1NyAtMi4yMTQsLTEuOTc4IC0zLjg1MiwtMS45NTkgLTIuMDE2LDAuMDIgLTQuMDMxLC0wLjAxMyAtNi4wNDYsMC4wMTMgLTAuNSwwLjAwNyAtMS4wMTMsMC4xMDIgLTEuNDk4LDAuMjM4IC0wLjc5MiwwLjIyMSAtMS4wNDUsMC43NTcgLTAuNzk2LDEuNTMyIDAuMTQyLDAuNDQ5IDAuMjk4LDAuODg0IDAuNDI5LDEuMzM1IDAuMTU3LDAuNTUxIC0wLjA5NSwxLjAwMSAtMC42NDgsMS4yIC0xLjM5NCwwLjUwMSAtMi43NTQsMC4yNjggLTMuOTU2LC0wLjQ0OSAtMi42MTksLTEuNTY3IC01LjQxOCwtMi41OTMgLTguMzk4LC0zLjE0NiAtMS42NTQsLTAuMzA1IC0zLjMxMiwtMC41OTcgLTQuOTc3LC0wLjgyMyAtMS4xMzMsLTAuMTU0IC0yLjI4MiwtMC4yMyAtMy40MjIsLTAuMjQ3IC00LjEyMywtMC4wNjUgLTguMjUsLTAuMTgxIC0xMi4zNjgsLTAuMSAtMy4xMzUsMC4wNjQgLTYuMjYzLDAuNDIgLTkuMjQzLDEuNTMyIC0xLjIyNSwwLjQ1MyAtMi4xMzQsMS4zMTQgLTIuOTAxLDIuMzMgLTAuNTYsMC43MzkgLTEuMzQsMC45MzQgLTIuMTk4LDEuMDIxIC0yLjIwOSwwLjIyMSAtNC4xODUsLTAuNTU0IC02LjIxMywtMS4yODggLTIuMjY2LC0wLjgyMyAtNC42MDUsLTEuNDYzIC02Ljk0OCwtMi4wNDQgLTEuODkzLC0wLjQ3MyAtMy44MzEsLTAuNzU3IC01Ljc1NSwtMS4wODggLTAuOTQ5LC0wLjE2NSAtMS45MTMsLTAuMjIxIC0yLjg1OCwtMC4zODUgLTAuNDI3LC0wLjA3OCAtMC44NjgsLTAuMjM2IC0xLjIzOSwtMC40NTkgLTAuNDksLTAuMjk4IC0wLjQzNSwtMC44NjUgMC4wOTgsLTEuMDg3IDAuNDI3LC0wLjE3MiAwLjg5MSwtMC4yNzkgMS4zNDcsLTAuMzU1IDEuNDA5LC0wLjIzNyAyLjgyLC0wLjQ0NyA0LjIzMSwtMC42NjIgMC4xNzMsLTAuMDI4IDAuMzUsLTAuMDU5IDAuNTI2LC0wLjA2MiA0LjQwNCwtMC4wNDIgOC44MDcsLTAuMDQ2IDEzLjIwNywtMC4xNDEgMS41NDksLTAuMDM1IDMuMDg4LC0wLjMyOSA0LjYzNiwtMC40NCAwLjk3MywtMC4wNyAxLjk1OSwtMC4wNzIgMi45MzEsLTAuMDA2IDEuNTY5LDAuMTA5IDMuMTMxLDAuMzAxIDQuNjk1LDAuNDU3IDAuMTIsMC4wMTEgMC4yMzgsMC4wMDggMC4zNTksMC4wMDggNS4wNjEsMC4wNDEgMTAuMTIyLDAuMDk0IDE1LjE4MiwwLjExNyA0LjI3MiwwLjAyIDguNTQzLDAuMDIgMTIuODEyLDAgNS40NzksLTAuMDI1IDEwLjk1OCwtMC4wNzQgMTYuNDM4LC0wLjEyMiAwLjQxNCwtMC4wMDMgMC44MzQsLTAuMDQ0IDEuMjI5LC0wLjE0MyAxLjI4MiwtMC4zNDIgMS4yNjQsLTEuMjc0IDAuNzAxLC0yLjI1NSAtMC40ODcsLTAuODQ1IC0xLjA5OCwtMS42MTkgLTEuNTg0LC0yLjQ2NSAtMC4yMywtMC40IC0wLjQyNCwtMC45MDIgLTAuMzk3LC0xLjM0NyAwLjAzMywtMC42MTcgMC42MjMsLTAuOTYzIDEuNDc0LC0wLjk2MyA0LjIyOSwtMC4wMTIgOC40NTcsLTAuMDI1IDEyLjY4OSwwLjAwNiAxLjIxMywwLjAxMiAyLjA3NSwwLjczNCAyLjc2NSwxLjY4NCAxLjAyMywxLjQwOCAyLjA0NiwyLjgxOCAzLjA5LDQuMjEgMC43NDQsMC45ODcgMS44NDIsMS4yNDcgMi45ODgsMS4yNyAyLjEzMywwLjAzNiA0LjI2OSwwLjAxNSA2LjQwNCwwLjAwMyAwLjQxLC0wLjAwMyAwLjgyOSwtMC4wNTQgMS4yMjYsLTAuMTU0IDAuOTE1LC0wLjIxOCAxLjMxNiwtMS4wMyAwLjgzNSwtMS44MzUgLTAuNzYsLTEuMjc2IC0xLjU3MywtMi41MiAtMi40MDgsLTMuNzQ0IC0xLjA3LC0xLjU2NyAtMi4xODUsLTMuMTA0IC0zLjI4MSwtNC42NTUgLTEuNSwtMi4xMjMgLTIuOTc3LC00LjI2MyAtNC41MTMsLTYuMzU5IC0wLjUzNywtMC43MzggLTEuMzI0LC0xLjE4IC0yLjI3MSwtMS4xOTggLTIuMzg2LC0wLjA1MyAtNC43NzUsLTAuMDkyIC03LjE2LC0wLjExNSAtMC4zOSwtMC4wMDUgLTAuNzk0LDAuMDMyIC0xLjE2NywwLjEzNSAtMS4yMDYsMC4zMjQgLTEuNDY2LDEuMDQ5IC0wLjgwNiwyLjE3NCAwLjczMSwxLjI0NiAxLjU4MywyLjQyIDIuMzEyLDMuNjY4IDAuNTI2LDAuODkzIDAuMTczLDEuNjM1IC0wLjgxNywxLjg3NSAtMC40LDAuMDk5IC0wLjgxNywwLjE1NCAtMS4yMjcsMC4xNTQgLTMuNDcsMC4wMTQgLTYuOTQyLDAuMDE2IC0xMC40MTgsMCAtMC42MjIsLTAuMDA1IC0xLjI0NiwtMC4xMyAtMS44NzEsLTAuMTk3IC0xLjEzNywtMC4xMTUgLTEuODU1LC0wLjg1IC0yLjQ3MywtMS43MDggLTEuMTQ3LC0xLjU4MSAtMi4yNDcsLTMuMTk4IC0zLjQxNiwtNC43NjggLTAuNTQ4LC0wLjczIC0xLjMxOCwtMS4xOTQgLTIuMjU5LC0xLjIxNiAtMi4zODcsLTAuMDU5IC00Ljc3NSwtMC4xIC03LjE2MiwtMC4xMTcgLTAuNDYsMCAtMC45MzUsMC4wOTcgLTEuMzgsMC4yMjggLTAuOTU3LDAuMjczIC0xLjIzNCwwLjg0OSAtMC43NDksMS43MjUgMC42LDEuMDkzIDEuMjc5LDIuMTQ3IDEuOTg0LDMuMTc2IDEuMDU3LDEuNTUzIDIuMTY4LDMuMDY5IDMuMjUyLDQuNjA1IDAuNjE3LDAuODc4IDEuMjQyLDEuNzU4IDEuODIyLDIuNjU1IDAuMjY3LDAuNDIzIDAuNDgzLDAuODkxIDAuNjQ4LDEuMzYzIDAuMTUsMC40NDIgMC4wMzIsMC44ODEgLTAuNDMzLDEuMDc3IC0wLjQwNSwwLjE3MyAtMC44NDksMC4zNDUgLTEuMjc5LDAuMzUxIEMgOTcuODUzLDYuMjc1IDk1LjQ1OCw2LjI2OCA5My4wNjMsNi4yNTQgOTIuNDcyLDYuMjQ4IDkxLjg3OSw2LjE4OSA5MS4yOTcsNi4wOTggOTAuMDU0LDUuOTAyIDg5LjI5Miw1LjA1OSA4OC42MDksNC4wODMgODUuOTI3LDAuMjUyIDgzLjI0MSwtMy41NyA4MC41MzMsLTcuMzc4IGMgLTAuNzg4LC0xLjExMSAtMS45NTIsLTEuNTU0IC0zLjI4LC0xLjU2NSAtMi4xMTMsLTAuMDE0IC00LjIzMiwtMC4wMSAtNi4zNDcsMC4wMDQgLTAuNDA5LDEwZS00IC0wLjgzMiwwLjAzMSAtMS4yMjksMC4xMzYgLTEuMjQ5LDAuMzM2IC0xLjM2NiwxLjE5OCAtMC43NTcsMi4xODQgMS4wMTcsMS42NDUgMi4xODQsMy4xOTMgMy4yOSw0Ljc4NyAxLjAzNywxLjQ4OCAyLjA5LDIuOTc1IDMuMTEyLDQuNDc4IDAuMzY0LDAuNTMgMC42OTIsMS4wODggMC45OTEsMS42NTUgMC40NzIsMC44OTkgMC4xMTYsMS42MzggLTAuODg2LDEuODI2IC0wLjQ2LDAuMDg0IC0wLjk0MSwwLjEyNSAtMS40MDksMC4xMjcgQyA3Mi4wODIsNi4yNjggNzAuMTQ2LDYuMjA5IDY4LjIxLDYuMjczIDY2Ljc4Miw2LjMyIDY1LjY3OSw1Ljg1OSA2NC45MTIsNC42NDIgNjMuNzU1LDIuODExIDYxLjk1MiwxLjkxMiA1OS45OTQsMS4yMzUgNTkuNDk3LDEuMDY1IDU4Ljk4MiwwLjkyNiA1OC41MDYsMC43MTQgNTcuOTI0LDAuNDQ5IDU3LjM3NCwtMC4wMTggNTcuOTI3LC0wLjgyNCA1OC45NDQsLTIuMzE5IDU4LjM0NywtMy42MDMgNTcuNTIyLC00LjkyIDU3LC01Ljc2IDU2LjU4NCwtNi42NjUgNTYuMTYsLTcuNTYyIDU1Ljg0LC04LjIzIDU1LjM0NCwtOC42NTggNTQuNjM0LC04LjgwNSBjIC0wLjQ0LC0wLjA5MSAtMC44OTksLTAuMTMzIC0xLjM0OCwtMC4xMzQgLTIuNDM0LC0wLjAxNCAtNC44NywtMC4wMiAtNy4zMDUsMTBlLTQgLTAuNDgsMC4wMDYgLTAuOTY1LDAuMTIzIC0xLjQ0MiwwLjIzMiAtMC45NjIsMC4yMTEgLTEuMTc2LDEuMTYyIC0wLjgwMSwxLjkxNiAwLjQyOCwwLjg1NSAwLjk1NCwxLjY2IDEuNDU4LDIuNDc0IDEuMTA1LDEuNzY3IC0wLjE1NiwyLjU5MyAtMS41OTcsMi42NiAtMS44MjYsMC4wOSAtMy42NTUsMC4xMTEgLTUuNDg1LDAuMTIyIC0wLjc0NywwLjAwNiAtMS41MDEsLTAuMDUxIC0yLjI0NSwtMC4xNSBDIDM0LjYzOCwtMS44NDggMzMuODY4LC0yLjY5NSAzMy4xOTIsLTMuNjM5IDMyLjI0NywtNC45NTcgMzEuMzQ2LC02LjMwNyAzMC4zNzIsLTcuNiAyOS44MSwtOC4zNSAyOS4wMjIsLTguNzk3IDI4LjA1NCwtOC44MjcgMjYuNjA1LC04Ljg2OSAyNS4xNTYsLTguOTIxIDIzLjcwNywtOC45NDMgMjAuNzgyLC04Ljk5MyAxNy44NTUsLTkuMDU2IDE0LjkzLC05LjA1OCAxMi40ODEsLTkuMDYzIDEwLjAzNSwtOSA3LjU4OSwtOC45NDMgNi4xNjQsLTguOTEgNS4wNzksLTguMzggNC42MDMsLTYuODk2IGMgLTAuNDQxLDEuMzczIC0xLjQzNCwxLjkzNSAtMi44ODgsMS45MTcgLTMuMjUzLC0wLjA1IC02LjUwOCwtMC4wODUgLTkuNzU4LDAuMDA4IC0xLjk1LDAuMDU2IC0zLjU4OCwtMC41OTcgLTUuMTk2LC0xLjU4MyAtMS40MDksLTAuODYyIC0yLjc2NSwtMS44NjUgLTQuNDQxLC0yLjE5IC0wLjUxOSwtMC4xMDQgLTEuMDQ4LC0wLjE4MSAtMS41NzUsLTAuMTk0IC0wLjk3NiwtMC4wMzIgLTEuOTU1LC0wLjAxMSAtMi45MzMsLTAuMDExIGggLTE3Ljc1NCB6IgogICAgICAgICAgICAgc3R5bGU9ImZpbGw6IzIzMWYyMDtmaWxsLW9wYWNpdHk6MTtmaWxsLXJ1bGU6ZXZlbm9kZDtzdHJva2U6bm9uZSIKICAgICAgICAgICAgIGlkPSJwYXRoMjIiIC8+PC9nPjxnCiAgICAgICAgICAgaWQ9ImcyNCIKICAgICAgICAgICB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNDMuNTgzLDU4LjQ1MTIpIj48cGF0aAogICAgICAgICAgICAgZD0ibSAwLDAgdiAwLjExOSBjIC0wLjg3NiwwIC0xLjc1OSwtMC4wMjUgLTIuNjM1LDAuMDA2IC0xLjM1MiwwLjA0OSAtMi4zNzIsLTAuNTY3IC0zLjEyNCwtMS42MDIgLTEuNTQ0LC0yLjExOSAtMy4wNDQsLTQuMjY3IC00LjUyMywtNi40MjkgLTAuNjM3LC0wLjkzIC0xLjIyNywtMS44OTkgLTEuNzQyLC0yLjkwMiAtMC4zMTUsLTAuNjA2IDAuMDYsLTEuMjQxIDAuNzE3LC0xLjM5NyAwLjM0MSwtMC4wODIgMC42OTgsLTAuMTMyIDEuMDQ4LC0wLjEyNyAxLjY1LDAuMDIyIDMuMjk4LDAuMDQgNC45NDYsMC4xMjUgMS4zMzUsMC4wNjcgMi42NjksMC4yMDQgMy45OTYsMC4zNDcgMi40NzcsMC4yNzYgNC45LDAuNzc5IDcuMjI2LDEuNjgxIDIuMTQ0LDAuODI4IDQuMTcyLDEuODYgNS41ODMsMy43NDEgMC40NjcsMC42MTggMC44NzksMS4zOTUgMC45ODUsMi4xNDggMC4yMSwxLjQ5MyAtMC44MDgsMi40NjIgLTIuMjM0LDMuMDggLTEuNzgyLDAuNzcyIC0zLjY5NywxLjAyIC01LjYsMS4xNzkgQyAzLjEwNiwwLjEwMiAxLjU0NywwIDAsMCBtIC0wLjQ4LDIuOTkgYyAzLjI1MiwwIDYuNTA3LDAuMDI1IDkuNzU1LC0wLjAxNCAxLjk0MywtMC4wMTkgMy44ODcsLTAuMDc0IDUuODE5LC0wLjI0OSAyLjUzMSwtMC4yMjUgNS4wNDcsLTAuNjQxIDcuMzkzLC0xLjY4NyAxLjMzMSwtMC41OTIgMi41MzYsLTEuNDI4IDMuMDU4LC0yLjg2OCAwLjU0OCwtMS41MjMgMC4wNDEsLTIuOTE1IC0wLjgwNSwtNC4xOTYgLTEuMTc4LC0xLjc5MiAtMi44MTEsLTMuMDk0IC00LjYzMywtNC4xNzQgLTMuMzM2LC0xLjk3OSAtNi45OCwtMy4xMDkgLTEwLjc2MywtMy44MDIgLTEuOTY1LC0wLjM1NSAtMy45NDksLTAuNjA4IC01LjkzNCwtMC44MzQgLTEuMjkzLC0wLjE1NCAtMi41OTgsLTAuMjMzIC0zLjg5OCwtMC4yNDQgLTcuNzM1LC0wLjA2IC0xNS40NjYsLTAuMDk0IC0yMy4xOTksLTAuMTI1IC0wLjQ3LC0wLjAwMiAtMC45NTEsMC4wNDIgLTEuNDA4LDAuMTM2IC0xLjExNSwwLjIxOCAtMS40OTgsMS4wMzggLTAuOTA0LDIuMDcyIDAuNTg2LDEuMDExIDEuMjY3LDEuOTY5IDEuOTQyLDIuOTI5IDIuNjIsMy43NSA1LjI2LDcuNDg0IDcuODczLDExLjI0IDAuOTA1LDEuMjk1IDIuMTU2LDEuODE0IDMuNjc2LDEuODE2IHoiCiAgICAgICAgICAgICBzdHlsZT0iZmlsbDojMjMxZjIwO2ZpbGwtb3BhY2l0eToxO2ZpbGwtcnVsZTpldmVub2RkO3N0cm9rZTpub25lIgogICAgICAgICAgICAgaWQ9InBhdGgyNiIgLz48L2c+PC9nPjwvZz48L2c+PC9zdmc+Cg==" alt="Liquid Earth">
-        </div>
 
-        <div class="menu-item">
-            <button class="menu-button" onclick="toggleDropdown(this)">
-                Dates
-            </button>
-            <div class="dropdown-content">
-                <div class="dropdown-inner">
-                    <div class="event">
-                        <div class="event-date">FEB 14 — LOS ANGELES, CA</div>
-                        <div class="event-details">The Venue @ 10PM</div>
-                    </div>
-                    <div class="event">
-                        <div class="event-date">MAR 22 — BROOKLYN, NY</div>
-                        <div class="event-details">Elsewhere Rooftop @ 11PM</div>
-                    </div>
-                    <div class="event">
-                        <div class="event-date">APR 05 — BERLIN, DE</div>
-                        <div class="event-details">Berghain @ Midnight</div>
-                    </div>
-                </div>
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>liquid earth</h1>
+        <p class="lede">dates · releases · mixes · merch · booking</p>
+      </div>
+    </section>
+
+    <section class="accordion">
+      <div class="container">
+
+        <details open>
+          <summary class="section-title">dates</summary>
+          <div class="panel">
+            <div class="list">
+              <div class="row"><div class="date">23.01</div><div>Redroom by CODA</div><div class="meta">Singapore</div></div>
+              <div class="row"><div class="date">24.01</div><div>Hacienda Festival</div><div class="meta">Bangkok</div></div>
+              <div class="row"><div class="date">30.01</div><div>Pools</div><div class="meta">Dali</div></div>
+              <div class="row"><div class="date">31.01</div><div>Clinic</div><div class="meta">Chengdu</div></div>
             </div>
-        </div>
+          </div>
+        </details>
 
-        <div class="menu-item">
-            <button class="menu-button" onclick="toggleDropdown(this)">
-                Merch
-            </button>
-            <div class="dropdown-content">
-                <div class="dropdown-inner">
-                    Limited edition t-shirts, hoodies, and posters available now.<br><br>
-                    All items screen-printed with custom artwork.<br><br>
-                    <a href="#" target="_blank">Shop merch →</a>
-                </div>
+        <details>
+          <summary class="section-title">releases</summary>
+          <div class="panel">
+            <div class="list">
+              <div class="row"><div class="date">2026</div><div>release title — label</div><div class="meta">digital</div></div>
+              <div class="row"><div class="date">2025</div><div>release title — label</div><div class="meta">vinyl</div></div>
+              <div class="row"><div class="date">2024</div><div>release title — label</div><div class="meta">digital</div></div>
             </div>
-        </div>
+          </div>
+        </details>
 
-        <div class="menu-item">
-            <button class="menu-button" onclick="toggleDropdown(this)">
-                Releases
-            </button>
-            <div class="dropdown-content">
-                <div class="dropdown-inner">
-                    <div class="release">
-                        <div class="release-title">Tidal Waves EP (2025)</div>
-                        <div>Out now on all platforms</div>
-                    </div>
-                    <div class="release">
-                        <div class="release-title">Submerged (2024)</div>
-                        <div>12" vinyl + digital</div>
-                    </div>
-                    <div class="release">
-                        <div class="release-title">Ocean Floor Compilation (2024)</div>
-                        <div>Digital release</div>
-                    </div>
-                </div>
+        <details>
+          <summary class="section-title">mixes</summary>
+          <div class="panel">
+            <div class="list">
+              <div class="row"><div class="date">2026</div><div>mix title</div><div class="meta">soundcloud</div></div>
+              <div class="row"><div class="date">2025</div><div>live @ venue</div><div class="meta">mixcloud</div></div>
+              <div class="row"><div class="date">2024</div><div>guest mix</div><div class="meta">radio</div></div>
             </div>
-        </div>
+          </div>
+        </details>
 
-        <div class="menu-item">
-            <button class="menu-button" onclick="toggleDropdown(this)">
-                Mixes
-            </button>
-            <div class="dropdown-content">
-                <div class="dropdown-inner">
-                    <div class="release">
-                        <div class="release-title">Liquid Earth — January 2026 Mix</div>
-                        <div><a href="#" target="_blank">Listen on SoundCloud →</a></div>
-                    </div>
-                    <div class="release">
-                        <div class="release-title">Deep Waters Radio #12</div>
-                        <div><a href="#" target="_blank">Listen on SoundCloud →</a></div>
-                    </div>
-                    <div class="release">
-                        <div class="release-title">Boiler Room Set — December 2025</div>
-                        <div><a href="#" target="_blank">Watch on YouTube →</a></div>
-                    </div>
-                </div>
+        <details>
+          <summary class="section-title">merch</summary>
+          <div class="panel">
+            <div class="list">
+              <div class="row"><div class="date">tee</div><div>tour shirt</div><div class="meta">sold out</div></div>
+              <div class="row"><div class="date">hood</div><div>logo hoodie</div><div class="meta">available</div></div>
+              <div class="row"><div class="date">print</div><div>australasia 2026 poster</div><div class="meta">available</div></div>
             </div>
-        </div>
+          </div>
+        </details>
 
-        <div class="menu-item">
-            <button class="menu-button" onclick="toggleDropdown(this)">
-                Booking
-            </button>
-            <div class="dropdown-content">
-                <div class="dropdown-inner">
-                    For all booking inquiries:<br><br>
-                    <a href="mailto:booking@liquidearth.com">booking@liquidearth.com</a><br><br>
-                    Management: <a href="mailto:management@liquidearth.com">management@liquidearth.com</a>
-                </div>
+        <details>
+          <summary class="section-title">booking</summary>
+          <div class="panel">
+            <div class="list">
+              <div class="row"><div class="date">agent</div><div>tangle agency</div><div class="meta">asia / anz</div></div>
+              <div class="row"><div class="date">email</div><div><a href="mailto:booking@liquidearth.com" style="color:var(--fog)">booking@liquidearth.com</a></div><div class="meta">inquiries</div></div>
             </div>
-        </div>
-    </div>
+          </div>
+        </details>
 
-    <script>
-        function toggleDropdown(button) {
-            const wasActive = button.classList.contains('active');
-            
-            // Close all dropdowns
-            document.querySelectorAll('.menu-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelectorAll('.dropdown-content').forEach(content => {
-                content.classList.remove('active');
-            });
+        <footer>
+          <div style="padding-top:38px">
+            <div>@liquidearthliquidlove · tangle agency · bassis asia</div>
+          </div>
+        </footer>
 
-            // If this wasn't active, open it
-            if (!wasActive) {
-                button.classList.add('active');
-                button.nextElementSibling.classList.add('active');
-            }
-        }
-    </script>
+      </div>
+    </section>
+  </main>
+
 </body>
 </html>
